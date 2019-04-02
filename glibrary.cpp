@@ -3,7 +3,7 @@
 #include <GL/glut.h>
 #include <math.h>
 #include <tuple>
-
+#include <cstring>
 
 
 void drawLine2d(float x1, float y1, float x2, float y2, float border){
@@ -18,7 +18,6 @@ void drawLine2d(float x1, float y1, float x2, float y2, float border){
     glEnd();
 
 }
-
 
 void drawCircleBorder2d(float radius, float h, float k, float border, float n_points){
 
@@ -116,13 +115,13 @@ void drawCircleSegmentSolid2d(float radius, float h, float k, float degree_segme
 
 void drawTriangleBorder2d(float x, float y, float base, float height, float border) {
 
-    glLineWidth(border);
+    float base_ = base / 2;
 
     glBegin(GL_LINE_LOOP);
 
-    glVertex2f(x, y);
-    glVertex2f(x+base, y);
-    glVertex2f((x+base)/2, y+height);
+    glVertex2f(x-base_, y);
+    glVertex2f(x+base_, y);
+    glVertex2f(x, y+height);
 
     glEnd();
 
@@ -130,11 +129,13 @@ void drawTriangleBorder2d(float x, float y, float base, float height, float bord
 
 void drawTriangleSolid2d(float x, float y, float base, float height) {
 
+    float base_ = base / 2;
+
     glBegin(GL_TRIANGLES);
 
-    glVertex2f(x, y);
-    glVertex2f(x+base, y);
-    glVertex2f((x+base)/2, y+height);
+    glVertex2f(x-base_, y);
+    glVertex2f(x+base_, y);
+    glVertex2f(x, y+height);
 
     glEnd();
 
@@ -242,3 +243,78 @@ void drawLineStripHorizontal2d(float x1, float y1, float length, float border) {
     glEnd();
 
 }
+
+
+void drawText(char *string, float x, float y, void *font){
+
+    int len = strlen(string);
+    glRasterPos2d(x, y);
+    for (int i = 0; i <= len; i++ ) {
+        glutBitmapCharacter(font, string[i]);
+    }
+
+}
+
+void drawDisk2d(float radius, float h, float k, float width, float n_segments) {
+
+
+    glBegin(GL_QUAD_STRIP);
+
+    for( float angle = 0; angle <= 365; angle+=(360/n_segments) ){
+
+        glVertex2f((radius * cos(angle * (M_PI/ 180))) + h,(radius * sin(angle * (M_PI/ 180)))+k);
+        glVertex2f(((radius + width) * cos(angle * (M_PI/ 180))) + h,((radius + width) * sin(angle * (M_PI/ 180)))+k);
+
+    }
+
+    glEnd();
+
+}
+
+void setOrtho(int quadrants, double width, double height, double z) {
+
+    switch( quadrants ){
+
+        case 1:
+            glOrtho(0, width, 0, height, -z, z);
+            break;
+        case 2:
+            glOrtho(-width, 0, 0, height, -z, z);
+            break;
+        case 3:
+            glOrtho(-width, 0, -height, 0, -z, z);
+            break;
+        case 4:
+            glOrtho(0, width, -height, 0, -z, z);
+            break;
+        case 12:
+            glOrtho(-width, width, 0, height, -z, z);
+            break;
+        case 21:
+            glOrtho(-width, width, 0, height, -z, z);
+            break;
+        case 34:
+            glOrtho(-width, width, -height, 0, -z, z);
+            break;
+        case 43:
+            glOrtho(-width, width, -height, 0, -z, z);
+            break;
+        case 23:
+            glOrtho(-width, 0, -height, height, -z, z);
+            break;
+        case 32:
+            glOrtho(-width, 0, -height, height, -z, z);
+            break;
+        case 14:
+            glOrtho(0, width, -height, height, -z, z);
+            break;
+        case 41:
+            glOrtho(0, width, -height, height, -z, z);
+            break;
+        default:
+            glOrtho(-width, width, -height, height, -z, z);
+            break;
+    }
+
+}
+

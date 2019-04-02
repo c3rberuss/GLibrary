@@ -28,4 +28,12 @@ void drawLineAngle2d(float x, float y, float large, float angle, float border);
 void drawRectangleBorderAngle2d(float x, float y, float height, float width, float angle,float border);
 void drawRectangleSolidAngle2d(float x, float y, float height, float width, float angle);
 
+void drawText(char *string, float x, float y, void *font);
+
+void drawDisk2d(float radius, float h, float k, float width, float n_segments);
+
+void setOrtho(int quadrants, double width, double height, double z);
+
+void drawRectanglesSolid2d( std::tuple< std::tuple< float, float, float, float>> dims );
+
 #endif
