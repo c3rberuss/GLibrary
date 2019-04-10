@@ -318,3 +318,96 @@ void setOrtho(int quadrants, double width, double height, double z) {
 
 }
 
+
+int factorial(int n)
+{
+    if(n > 1)
+        return n * factorial(n - 1);
+    else
+        return 1;
+}
+
+int combination(int n, int p ){
+
+    return factorial(n) / ( factorial(p) * factorial( n - p ) );
+
+}
+
+void bezier(float x[], float y[], float n, float increment){
+
+    float x_aux  = 0;
+    float y_aux = 0;
+
+    n-=1;
+
+    for( float t = 0.0; t<1; t+=increment) {
+
+        x_aux = 0.0;
+        y_aux = 0.0;
+
+        for (int i = 0; i <= n; i++) {
+
+            x_aux += combination(n, i) * x[i] * pow((1 - t), n - i) * pow(t, i);
+            //std::cout<<"i - x: "<<i<<std::endl;
+
+        }
+
+        for (int i = 0; i <= n; i++) {
+
+            y_aux += combination(n, i) * y[i] * pow((1 - t), n - i) * pow(t, i);
+            //std::cout<<"i - y: "<<i<<std::endl;
+
+        }
+
+        glVertex2f(x_aux, y_aux);
+
+    }
+
+}
+
+std::tuple<float, float, float, float> drawLineAnglePoints2d(float x, float y, float large, float angle) {
+
+
+    glVertex2f(x, y);
+
+    float x2 = (large * cos( angle * (M_PI / 180) ))+x;
+    float y2 = (large * sin( angle * (M_PI / 180) ))+y;
+
+    glVertex2f( x2, y2);
+
+    return { x,y, x2, y2};
+}
+
+std::tuple<float, float, float, float> bezierPoints(float *x, float *y, int n, float increment) {
+
+    float x_aux  = 0;
+    float y_aux = 0;
+
+    n-=1;
+
+    for( float t = 0.0; t<1; t+=increment) {
+
+        x_aux = 0.0;
+        y_aux = 0.0;
+
+        for (int i = 0; i <= n; i++) {
+
+            x_aux += combination(n, i) * x[i] * pow((1 - t), n - i) * pow(t, i);
+            //std::cout<<"i - x: "<<i<<std::endl;
+
+        }
+
+        for (int i = 0; i <= n; i++) {
+
+            y_aux += combination(n, i) * y[i] * pow((1 - t), n - i) * pow(t, i);
+            //std::cout<<"i - y: "<<i<<std::endl;
+
+        }
+
+        glVertex2f(x_aux, y_aux);
+
+    }
+
+    return { x[0],y[0], x[n], y[n]};
+}
+

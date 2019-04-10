@@ -1,6 +1,6 @@
 
 #include <iostream>
-
+#include <tuple>
 #ifndef GLIBRARY_LIBRARY_H
 #define GLIBRARY_LIBRARY_H
 
@@ -35,5 +35,15 @@ void drawDisk2d(float radius, float h, float k, float width, float n_segments);
 void setOrtho(int quadrants, double width, double height, double z);
 
 void drawRectanglesSolid2d( std::tuple< std::tuple< float, float, float, float>> dims );
+
+int factorial(int n);
+
+int combination(int n, int p );
+
+void bezier(float x[], float y[], float n, float increment);
+
+std::tuple<float, float, float, float> drawLineAnglePoints2d(float x, float y, float large, float angle);
+std::tuple<float, float, float, float> bezierPoints(float x[], float y[], float n, float increment);
+
 
 #endif
